@@ -4,7 +4,7 @@
 int main()
 {
   int nevents = 10;
-  Pythia8::Pythia pythia;      //every event is a proton-proton collision. 
+  Pythia8::Pythia pythia; //every event is a proton-proton collision. 
   pythia.readString("Beams:idA = 2212");
   pythia.readString("Beams:idB = 2212"); 
   pythia.readString("Beams:eCM = 14.e3");
