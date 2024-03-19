@@ -13,7 +13,7 @@ int main()
   
   int id, event, size, no;
   double charge, m, px, py, pz, pT;
-  string name;
+  std name;
   bool is_charged, is_neutral;
   
   //defining branches of the tree file.
