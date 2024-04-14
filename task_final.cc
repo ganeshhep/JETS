@@ -61,7 +61,7 @@ int main()
 
           if (event_num != prev){
 	    prev = event_num;
-            n++;
+            n++; //n is the event number for the events containing stable particles, no leptons and pT > 1Gev
           } else {
 	        n = n;
 	  }
