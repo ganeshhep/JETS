@@ -12,7 +12,7 @@ int main()
   
   int id, event, size, event_num, n, prev, b_hadron_mother_id;
   double charge, px, py, pz, e, pT, b_hadron_px, b_hadron_py, b_hadron_pz, b_hadron_e;
-  bool is_charged, is_neutral, may_decay, isLepton, mother_b_hadron, isHadron;
+  bool is_charged, is_neutral, may_decay, isLepton, mother_b_hadron, isHadron, ishadron, isbHadron;
   std::vector<int> vec_mother_list;
   
   //defining branches of the tree file.
@@ -20,6 +20,7 @@ int main()
   tree->Branch("charge", &charge, "charge/D");
   tree->Branch("is_charged", &is_charged, "is_charged/B");
   tree->Branch("is_neutral", &is_neutral, "is_neutral/B");
+  tree->Branch("isbHadron", &isbHadron, "isbHadron/B");
   tree->Branch("mother_b_hadron", &mother_b_hadron, "mother_b_hadron/B");
   tree->Branch("px", &px, "px/D");
   tree->Branch("py", &py, "py/D");
@@ -59,6 +60,7 @@ int main()
     {
       may_decay = pythia.event[j].mayDecay();
       isLepton = pythia.event[j].isLepton();
+      isHadron = pythia.event[j].isHadron();
       pT = sqrt(pow(pythia.event[j].px(), 2) + pow(pythia.event[j].py(), 2));
 
       if (may_decay == 0 && isLepton == 0 && pT > 1){
@@ -75,6 +77,7 @@ int main()
           charge = pythia.event[j].charge();
           is_charged = pythia.event[j].isCharged();
           is_neutral = pythia.event[j].isNeutral();
+          isbHadron = 0;
           mother_b_hadron = 0;
 
           px = pythia.event[j].px();
@@ -87,12 +90,18 @@ int main()
           b_hadron_pz = 0;
           b_hadron_e = 0;
 
+          if (isHadron == 1){
+            if (pythia.event[pythia.event[j].mother1()].id() == 5){
+	      isbHadron = 1;
+            }
+          }
+
 	  vec_mother_list = pythia.event[j].motherList();
 
           for (int k = 0; k < vec_mother_list.size(); k++)
 	    {
-              isHadron = pythia.event[vec_mother_list.at(k)].isHadron();
-	      if (isHadron == 1){
+              ishadron = pythia.event[vec_mother_list.at(k)].isHadron();
+	      if (ishadron == 1){
                 b_hadron_mother_id = pythia.event[pythia.event[vec_mother_list.at(k)].mother1()].id();
                 if (b_hadron_mother_id == 5){
                    b_hadron_px = pythia.event[vec_mother_list.at(k)].px();
